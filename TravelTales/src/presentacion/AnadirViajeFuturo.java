@@ -28,21 +28,6 @@ public class AnadirViajeFuturo extends JFrame {
 	private JTextField textField;
 	private JButton btnAnadir;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AnadirViajeFuturo frame = new AnadirViajeFuturo();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.

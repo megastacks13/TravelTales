@@ -1,6 +1,8 @@
 package presentacion;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,7 +18,7 @@ public class Inicio extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void runUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -27,7 +29,9 @@ public class Inicio extends JFrame {
 				}
 			}
 		});
+		
 	}
+	
 
 	/**
 	 * Create the frame.
@@ -41,7 +45,17 @@ public class Inicio extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		contentPane.add(getBtnAnadirViajeFuturo());
+		
+		btnAnadirViajeFuturo.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        AnadirViajeFuturo frameViajeFuturo = new AnadirViajeFuturo();
+		        dispose();
+		        frameViajeFuturo.setVisible(true);
+		    }
+		});
 	}
+	
 	private JButton getBtnAnadirViajeFuturo() {
 		if (btnAnadirViajeFuturo == null) {
 			btnAnadirViajeFuturo = new JButton("Añadir viaje futuro");
@@ -49,4 +63,5 @@ public class Inicio extends JFrame {
 		}
 		return btnAnadirViajeFuturo;
 	}
+	
 }
