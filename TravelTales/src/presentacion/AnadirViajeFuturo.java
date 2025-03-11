@@ -1,12 +1,18 @@
 package presentacion;
 
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import modelo.TViaje;
+import persistencia.dao.viaje.DAOViaje;
+import persistencia.dao.viaje.DAOViajeImp;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -141,6 +147,23 @@ public class AnadirViajeFuturo extends JFrame {
 		if (btnAnadir == null) {
 			btnAnadir = new JButton("Añadir");
 			btnAnadir.setBounds(69, 248, 89, 23);
+			
+			btnAnadir.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String nombre = getTextFieldNombre().getText();
+					String destino = getTextFieldUbicacion().getText();
+					int numPersonas = (Integer) getSpinnerNumPersonas().getValue();
+					String fechaInicio = getInputFechaInicio().getText();
+					String fechaFin = getInputFechaFin().getText();
+					TViaje viaje = new TViaje(nombre, destino, numPersonas, fechaInicio, fechaFin);
+					
+					DAOViaje daoViaje = new DAOViajeImp();
+					daoViaje.crearViaje(viaje);
+				}
+				
+			});
 		}
 		return btnAnadir;
 	}

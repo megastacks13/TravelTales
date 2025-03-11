@@ -8,19 +8,29 @@ public class TViaje implements Serializable{
 	private int id;
     private String nombre;
 	private String destino;
+	private int numPersonas;
 	private String fechaIni;
 	private String fechaFin;
 	
 	
-	public TViaje(int id, String nombre, String destino, String fechaIni, String fechaFin) {
+	public TViaje(int id, String nombre, String destino, int numPersonas, String fechaIni, String fechaFin) {
 		this.id = id;
 		this.nombre = nombre;
 		this.destino = destino;
+		this.numPersonas = numPersonas;
 		this.fechaIni = fechaIni;
 		this.fechaFin = fechaFin;
 	}
 	
-	public TViaje(){};
+	public TViaje(String nombre, String destino, int numPersonas, String fechaIni, String fechaFin) {
+		this.nombre = nombre;
+		this.destino = destino;
+		this.numPersonas = numPersonas;
+		this.fechaIni = fechaIni;
+		this.fechaFin = fechaFin;
+	}
+	
+	public TViaje() {};
 	
 	public int getId() {
 		return id;
@@ -41,7 +51,15 @@ public class TViaje implements Serializable{
 		this.nombre = nombre;
 	}
 
+	public int getNumPersonas() {
+		return id;
+	}
 
+
+	public void setNumPersonas(int numPersonas) {
+		this.numPersonas = numPersonas;
+	}
+	
 	public String getDestino() {
 		return destino;
 	}
@@ -71,6 +89,7 @@ public class TViaje implements Serializable{
 		this.fechaFin = fechaFin;
 	}
 	
+	@Override
 	public boolean equals (Object obj) {
 		if (this == obj)
 			return true;
@@ -83,6 +102,7 @@ public class TViaje implements Serializable{
 		return  this.id == viaje.getId() && 
 				this.nombre.equals(viaje.getNombre()) && 
 				this.destino.equals(viaje.getDestino()) && 
+				this.numPersonas == viaje.getNumPersonas() &&
 				this.fechaIni.equals(viaje.getFechaIni()) &&
 				this.fechaFin.equals(viaje.getFechaFin());
 	}
