@@ -3,13 +3,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import utils.SQLPersonalInfo;
+
 public class ConexionBD {
     // Datos de conexión
-    private static final String URL = "jdbc:mysql://localhost:3306/TravelTales";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
+    private static final String URL = SQLPersonalInfo.URL;
+    private static final String USERNAME = SQLPersonalInfo.USERNAME;
+    private static final String PASSWORD = SQLPersonalInfo.PASSWORD;
 
-    public static Connection getConection() {
+    public static Connection getConnection() {
     		try {
     			//DriverManager.registerDriver(new org.hsqldb.jdbc.JDBCDriver());
     			Connection con = DriverManager.getConnection(URL,USERNAME,PASSWORD);
