@@ -1,6 +1,8 @@
 package presentacion;
 
 import java.awt.EventQueue;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,6 +13,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 
 public class AnadirViajeFuturo extends JFrame {
 
@@ -24,9 +27,12 @@ public class AnadirViajeFuturo extends JFrame {
 	private JTextField textFieldUbicacion;
 	private JSpinner spinnerNumPersonas;
 	private JLabel lblNumeroPersonas;
-	private JLabel lblFecha;
-	private JTextField textField;
+	private JLabel lblFechaInicio;
+	private JFormattedTextField inputFechaInicio;
 	private JButton btnAnadir;
+	private JLabel lblFechaFin;
+	private JFormattedTextField inputFechaFin;
+	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 
 	/**
@@ -56,9 +62,11 @@ public class AnadirViajeFuturo extends JFrame {
 			panelFormulario.add(getTextFieldUbicacion());
 			panelFormulario.add(getSpinnerNumPersonas());
 			panelFormulario.add(getLblNumeroPersonas());
-			panelFormulario.add(getLblFecha());
-			panelFormulario.add(getTextField());
+			panelFormulario.add(getLblFechaInicio());
+			panelFormulario.add(getInputFechaInicio());
 			panelFormulario.add(getBtnAnadir());
+			panelFormulario.add(getLblFechaFin());
+			panelFormulario.add(getInputFechaFin());
 		}
 		return panelFormulario;
 	}
@@ -73,14 +81,14 @@ public class AnadirViajeFuturo extends JFrame {
 	private JLabel getLblNombre() {
 		if (lblNombre == null) {
 			lblNombre = new JLabel("Nombre:");
-			lblNombre.setBounds(10, 73, 49, 14);
+			lblNombre.setBounds(10, 73, 69, 20);
 		}
 		return lblNombre;
 	}
 	private JTextField getTextFieldNombre() {
 		if (textFieldNombre == null) {
 			textFieldNombre = new JTextField();
-			textFieldNombre.setBounds(69, 70, 96, 20);
+			textFieldNombre.setBounds(97, 73, 96, 20);
 			textFieldNombre.setColumns(10);
 		}
 		return textFieldNombre;
@@ -114,20 +122,20 @@ public class AnadirViajeFuturo extends JFrame {
 		}
 		return lblNumeroPersonas;
 	}
-	private JLabel getLblFecha() {
-		if (lblFecha == null) {
-			lblFecha = new JLabel("Fecha de inicio:");
-			lblFecha.setBounds(10, 190, 115, 14);
+	private JLabel getLblFechaInicio() {
+		if (lblFechaInicio == null) {
+			lblFechaInicio = new JLabel("Fecha de inicio:");
+			lblFechaInicio.setBounds(10, 190, 115, 14);
 		}
-		return lblFecha;
+		return lblFechaInicio;
 	}
-	private JTextField getTextField() {
-		if (textField == null) {
-			textField = new JTextField();
-			textField.setBounds(97, 187, 96, 20);
-			textField.setColumns(10);
+	private JTextField getInputFechaInicio() {
+		if (inputFechaInicio == null) {
+			inputFechaInicio = new JFormattedTextField(df);
+			inputFechaInicio.setBounds(97, 187, 96, 20);
+			inputFechaInicio.setColumns(10);
 		}
-		return textField;
+		return inputFechaInicio;
 	}
 	private JButton getBtnAnadir() {
 		if (btnAnadir == null) {
@@ -135,5 +143,20 @@ public class AnadirViajeFuturo extends JFrame {
 			btnAnadir.setBounds(69, 248, 89, 23);
 		}
 		return btnAnadir;
+	}
+	private JLabel getLblFechaFin() {
+		if (lblFechaFin == null) {
+			lblFechaFin = new JLabel("Fecha de fin:");
+			lblFechaFin.setBounds(10, 216, 115, 14);
+		}
+		return lblFechaFin;
+	}
+	private JTextField getInputFechaFin() {
+		if (inputFechaFin == null) {
+			inputFechaFin = new JFormattedTextField(df);
+			inputFechaFin.setColumns(10);
+			inputFechaFin.setBounds(97, 214, 96, 20);
+		}
+		return inputFechaFin;
 	}
 }
