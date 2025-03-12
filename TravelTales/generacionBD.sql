@@ -15,8 +15,12 @@ fecha_fin DATE NOT NULL,
 activo TINYINT NOT NULL
 );
 
+-- Eliminamos constraint única de destino_viaje
+ALTER TABLE viajes DROP INDEX destino_viaje;
+
 -- Mostramos todas las tablas
 SHOW TABLES;
 
 -- Mostramos la columna de la tabla
 SELECT * FROM viajes;
+
