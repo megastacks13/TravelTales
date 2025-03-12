@@ -7,8 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 
-
-import modelo.TViaje;
+import modelo.viaje.TViaje;
 import persistencia.dao.transactions.TransactionFactory;
 import persistencia.dao.transactions.Transaction;
 
@@ -92,8 +91,10 @@ public class DAOViajeImp implements DAOViaje{
 				TViaje v1 = new TViaje(rs.getInt("id"),rs.getString("nombre_viaje"), rs.getString("destino_viaje"),
 						rs.getInt("num_personas"),rs.getDate("fecha_inicio").toString(), rs.getDate("fecha_fin").toString());
 				
-				if(viaje.equals(v1))
+				if(viaje.equals(v1)) {
 					nuevo = false;
+					break;
+					}
 			}
 			trans.commit();
 		
