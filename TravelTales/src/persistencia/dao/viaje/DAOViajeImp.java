@@ -34,12 +34,14 @@ public class DAOViajeImp implements DAOViaje{
 			trans.start();
 			con = (Connection) trans.getResource();
 			
-			pstmt = con.prepareStatement("INSERT INTO viaje (nombre_viaje, destino_viaje, fecha_inicio , fecha_fin) VALUES(?,?,?,?)",
+			pstmt = con.prepareStatement("INSERT INTO viajes (nombre_viaje, destino_viaje, fecha_inicio , fecha_fin,"
+					+ "num_personas) VALUES(?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, viaje.getNombre());
 			pstmt.setString(2, viaje.getDestino());
 			pstmt.setDate(3, viaje.getFechaIni());
 			pstmt.setDate(4, viaje.getFechaFin());
+			pstmt.setInt(5, viaje.getNumPersonas());
 			
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
