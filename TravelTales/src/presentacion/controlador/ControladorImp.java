@@ -6,6 +6,7 @@ import presentacion.IGUI;
 import presentacion.Inicio;
 import presentacion.command.Command;
 import presentacion.command.CommandFactory;
+import presentacion.factoriaGUI.FactoriaGUI;
 
 public class ControladorImp extends Controlador {
 
@@ -21,10 +22,7 @@ public class ControladorImp extends Controlador {
 			*/
 		} else {
 			Pair<Integer, Object> res = command.execute(transfer);
-			/*
-			gui = FactoriaGUI.getInstance().generateGUI(res.getKey());
-			*/
-			gui = new AnadirViajeFuturo();
+			gui = FactoriaGUI.getInstance().generarGUI(res.getKey());
 			gui.actualizar(res.getKey(), res.getValue());
 			
 		}
