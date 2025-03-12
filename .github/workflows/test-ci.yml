@@ -21,7 +21,7 @@ jobs:
           distribution: 'temurin'  
 
       - name: Compile Java files (before testing)
-        run: mkdir -p build && javac -d build src/**/*.java
+        run: mkdir -p build && javac -d build TravelTales/src/**/*.java
 
       - name: Run tests
         run: java -cp .:libs/*:out org.junit.runner.JUnitCore $(find out -name "Test*.class" | sed 's|out/||' | sed 's|.class||' | tr '/' '.')
