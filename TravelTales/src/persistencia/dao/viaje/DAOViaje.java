@@ -1,6 +1,6 @@
 package persistencia.dao.viaje;
 
-import modelo.TViaje;
+import modelo.viaje.TViaje;
 
 public interface DAOViaje{
 	

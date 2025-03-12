@@ -7,8 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 
-
-import modelo.TViaje;
+import modelo.viaje.TViaje;
 import persistencia.dao.transactions.TransactionFactory;
 import persistencia.dao.transactions.Transaction;
 
@@ -112,5 +111,4 @@ public class DAOViajeImp implements DAOViaje{
 
 		return nuevo;
 	}
-
 }
