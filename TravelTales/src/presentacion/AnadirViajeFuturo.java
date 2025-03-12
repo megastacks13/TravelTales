@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import modelo.TViaje;
+import modelo.viaje.TViaje;
 import persistencia.dao.viaje.DAOViaje;
 import persistencia.dao.viaje.DAOViajeImp;
 import presentacion.controlador.Controlador;
