@@ -46,13 +46,16 @@ public class DAOViajeImp implements DAOViaje{
 			if(rs.next()) {
 				confirmacion = true;
 			}
+			trans.commit();
 			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
+			trans.rollback();
 			return false;
 		}catch (ParseException e) {
 			e.printStackTrace();
+			trans.rollback();
 			return false;
 		}
 		finally {
