@@ -15,6 +15,7 @@ import persistencia.dao.viaje.DAOViajeImp;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
@@ -160,7 +161,11 @@ public class AnadirViajeFuturo extends JFrame {
 					TViaje viaje = new TViaje(nombre, destino, numPersonas, fechaInicio, fechaFin);
 					
 					DAOViaje daoViaje = new DAOViajeImp();
-					daoViaje.crearViaje(viaje);
+					boolean created = daoViaje.crearViaje(viaje);
+					if (created)
+						JOptionPane.showMessageDialog(null, "Alert", "Viaje creado correctamente.", JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(null, "Alert", "Error al crear el viaje.", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			});
