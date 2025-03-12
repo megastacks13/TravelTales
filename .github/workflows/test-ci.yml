@@ -1,0 +1,27 @@
+name: Java CI sin builds
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+
+      - name: Compile Java files (before testing)
+        run: mkdir -p build && javac -d build src/**/*.java
+
+      - name: Run tests
+        run: java -cp .:libs/*:out org.junit.runner.JUnitCore $(find out -name "Test*.class" | sed 's|out/||' | sed 's|.class||' | tr '/' '.')
+
