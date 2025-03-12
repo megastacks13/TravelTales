@@ -57,7 +57,7 @@ public class TViaje implements Serializable{
 	}
 
 	public int getNumPersonas() {
-		return id;
+		return this.numPersonas;
 	}
 
 
