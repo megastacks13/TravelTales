@@ -1,6 +1,9 @@
 package modelo;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
 
 public class TViaje implements Serializable{
 
@@ -11,6 +14,7 @@ public class TViaje implements Serializable{
 	private int numPersonas;
 	private String fechaIni;
 	private String fechaFin;
+	private DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);;
 	
 	
 	public TViaje(int id, String nombre, String destino, int numPersonas, String fechaIni, String fechaFin) {
@@ -70,8 +74,8 @@ public class TViaje implements Serializable{
 	}
 
 
-	public String getFechaIni() {
-		return fechaIni;
+	public Date getFechaIni() throws ParseException {
+		return (Date) df.parse(fechaIni);
 	}
 
 
@@ -80,8 +84,8 @@ public class TViaje implements Serializable{
 	}
 
 
-	public String getFechaFin() {
-		return fechaFin;
+	public Date getFechaFin() throws ParseException {
+		return (Date) df.parse(fechaFin);
 	}
 
 
@@ -99,12 +103,16 @@ public class TViaje implements Serializable{
 		
 		TViaje viaje = (TViaje) obj; 
 		
-		return  this.id == viaje.getId() && 
-				this.nombre.equals(viaje.getNombre()) && 
-				this.destino.equals(viaje.getDestino()) && 
-				this.numPersonas == viaje.getNumPersonas() &&
-				this.fechaIni.equals(viaje.getFechaIni()) &&
-				this.fechaFin.equals(viaje.getFechaFin());
+		try {
+			return  this.id == viaje.getId() && 
+					this.nombre.equals(viaje.getNombre()) && 
+					this.destino.equals(viaje.getDestino()) && 
+					this.numPersonas == viaje.getNumPersonas() &&
+					this.getFechaIni().equals(viaje.getFechaIni()) &&
+					this.getFechaFin().equals(viaje.getFechaFin());
+		} catch (ParseException e) {
+			return false;
+		}
 	}
 
 

@@ -9,6 +9,7 @@ CREATE TABLE viajes(
 id INT AUTO_INCREMENT PRIMARY KEY,
 nombre_viaje VARCHAR(100) NOT NULL UNIQUE,
 destino_viaje VARCHAR(100) NOT NULL,
+num_personas INT NOT NULL,
 fecha_inicio DATE NOT NULL,
 fecha_fin DATE NOT NULL
 );
