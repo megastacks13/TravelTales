@@ -38,7 +38,7 @@ public class AnadirViajeFuturo extends JFrame {
 	private JButton btnAnadir;
 	private JLabel lblFechaFin;
 	private JFormattedTextField inputFechaFin;
-	private DateFormat df = new SimpleDateFormat("dd.mm.yy");
+	private DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
 
 
 	/**

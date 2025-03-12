@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.sql.Date;
 
 
 import modelo.TViaje;
@@ -35,7 +34,7 @@ public class DAOViajeImp implements DAOViaje{
 			trans.start();
 			con = (Connection) trans.getResource();
 			
-			pstmt = con.prepareStatement("INSERT INTO VIAJE (nombre_viaje, destino_viaje, fecha_inicio , fecha_fin) VALUES(?,?,?,?)",
+			pstmt = con.prepareStatement("INSERT INTO viaje (nombre_viaje, destino_viaje, fecha_inicio , fecha_fin) VALUES(?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, viaje.getNombre());
 			pstmt.setString(2, viaje.getDestino());
@@ -81,7 +80,7 @@ public class DAOViajeImp implements DAOViaje{
 			trans = TransactionFactory.getInstance().newTransaction();
 			trans.start();
 			con = (Connection) trans.getResource();
-			pstmt = con.prepareStatement("SELECT* FROM VIAJE");
+			pstmt = con.prepareStatement("SELECT * FROM viaje");
 			rs = pstmt.executeQuery();
 			while(rs.next() && nuevo)
 			{

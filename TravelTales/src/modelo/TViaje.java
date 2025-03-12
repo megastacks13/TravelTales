@@ -1,9 +1,10 @@
 package modelo;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class TViaje implements Serializable{
 
@@ -14,7 +15,7 @@ public class TViaje implements Serializable{
 	private int numPersonas;
 	private String fechaIni;
 	private String fechaFin;
-	private DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);;
+	private DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
 	
 	
 	public TViaje(int id, String nombre, String destino, int numPersonas, String fechaIni, String fechaFin) {
@@ -74,8 +75,8 @@ public class TViaje implements Serializable{
 	}
 
 
-	public Date getFechaIni() throws ParseException {
-		return (Date) df.parse(fechaIni);
+	public java.sql.Date getFechaIni() throws ParseException {
+		return new java.sql.Date(((Date) df.parse(fechaIni)).getTime());
 	}
 
 
@@ -84,8 +85,8 @@ public class TViaje implements Serializable{
 	}
 
 
-	public Date getFechaFin() throws ParseException {
-		return (Date) df.parse(fechaFin);
+	public java.sql.Date getFechaFin() throws ParseException {
+		return new java.sql.Date(((Date) df.parse(fechaFin)).getTime());
 	}
 
 
