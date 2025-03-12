@@ -12,7 +12,7 @@ destino_viaje VARCHAR(100) NOT NULL,
 num_personas INT NOT NULL,
 fecha_inicio DATE NOT NULL,
 fecha_fin DATE NOT NULL,
-activo TINYINT NOT NULL
+activo TINYINT NOT NULL DEFAULT 1
 );
 
 -- Eliminamos constraint única de destino_viaje
