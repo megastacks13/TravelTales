@@ -61,7 +61,7 @@ public class SAViajeImp implements SAViaje {
 		try {
 			for(TViaje aux : lista) {
 				//el nuevo viaje empieza en medio de otro ya existente
-				if((viaje.getFechaIni().after(aux.getFechaIni()) && viaje.getFechaIni().before(aux.getFechaFin())) && 
+				if((viaje.getFechaIni().after(aux.getFechaIni()) && viaje.getFechaIni().before(aux.getFechaFin())) || 
 				//el nuevo viaje termina en medio de otro ya existente
 						(viaje.getFechaFin().after(aux.getFechaIni()) && viaje.getFechaFin().before(aux.getFechaFin())))
 					solapado = true;

@@ -35,6 +35,9 @@ public class DAOViajeImp implements DAOViaje{
 				
 			trans = TransactionFactory.getInstance().newTransaction();
 			trans.start();
+			//cuando se implemete TransactionManager sustituir las dos lineas anteriores por esto y 
+				//eliminar los commits() y los rollback()
+			//trans = TransactionManager.getInstance().getTransaccion();
 			con = (Connection) trans.getResource();
 			
 			pstmt = con.prepareStatement("INSERT INTO viajes (nombre_viaje, destino_viaje, fecha_inicio , fecha_fin,"
@@ -142,6 +145,7 @@ public class DAOViajeImp implements DAOViaje{
 				tv.setDestino(rs.getString("viajes.destino_viaje"));
 				tv.setFechaIni(formato.format(rs.getDate("viajes.fecha_inicio")));
 				tv.setFechaFin(formato.format(rs.getDate("viajes.fecha_fin")));
+				tv.setNumPersonas(rs.getInt("viajes.num_personas"));			
 			}
 			rs.close();
 			ps.close();
@@ -167,13 +171,14 @@ public class DAOViajeImp implements DAOViaje{
 			lista = new ArrayList<>();
 			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 			
-			if (rs.next()) {
+			while (rs.next()) {
 				tv = new TViaje();
 				tv.setId(rs.getInt("viajes.id"));
 				tv.setNombre(rs.getString("viajes.nombre_viaje"));
 				tv.setDestino(rs.getString("viajes.destino_viaje"));
 				tv.setFechaIni(formato.format(rs.getDate("viajes.fecha_inicio")));
 				tv.setFechaFin(formato.format(rs.getDate("viajes.fecha_fin")));
+				tv.setNumPersonas(rs.getInt("viajes.num_personas"));
 				lista.add(tv);
 			}
 			rs.close();
