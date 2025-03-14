@@ -1,4 +1,4 @@
-package modelo.Viaje;
+package modelo.viaje;
 
 import java.io.Serializable;
 import java.util.Date;

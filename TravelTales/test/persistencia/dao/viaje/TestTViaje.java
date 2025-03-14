@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import modelo.viaje.TViaje;
 
+
+
 public class TestTViaje {
 	TViaje t1 = new TViaje(0,"Viaje a Cancún", "Cancún", 35, "29/08/2025",
 			"05/09/2025");

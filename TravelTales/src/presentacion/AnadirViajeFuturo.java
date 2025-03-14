@@ -12,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import modelo.viaje.TViaje;
 import persistencia.dao.viaje.DAOViaje;
 import persistencia.dao.viaje.DAOViajeImp;
+import presentacion.controlador.Controlador;
+import presentacion.controlador.Evento;
 
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -24,9 +26,10 @@ import javax.swing.JSpinner;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
-public class AnadirViajeFuturo extends JFrame {
+public class AnadirViajeFuturo extends JFrame implements IGUI {
 
 	private static final long serialVersionUID = 1L;
+	private static final String title = "AÑADIR VIAJE FUTURO";
 	private JPanel contentPane;
 	private JPanel panelFormulario;
 	private JLabel lblInfoBasica;
@@ -164,8 +167,11 @@ public class AnadirViajeFuturo extends JFrame {
 					String fechaFin = getInputFechaFin().getText();
 					TViaje viaje = new TViaje(nombre, destino, numPersonas, fechaInicio, fechaFin);
 					
+					/*
 					DAOViaje daoViaje = new DAOViajeImp();
-					boolean created = daoViaje.crearViaje(viaje);
+					boolean created = daoViaje.crearViaje(viaje);*/
+					Controlador.getInstancia().accion(Evento.ANADIR_VIAJE_FUTURO, viaje);
+					/*
 					if (created) {
 						JOptionPane.showMessageDialog(null, "Viaje creado correctamente.", "Alerta de viaje",JOptionPane.INFORMATION_MESSAGE);
 						AnadirViajeFuturo frameViajeFuturo = new AnadirViajeFuturo();
@@ -174,6 +180,7 @@ public class AnadirViajeFuturo extends JFrame {
 					}
 					else
 						JOptionPane.showMessageDialog(null, "Error al crear el viaje. Revise que toda la información es correcta y si no contacte con soporte.", "Alerta de viaje",JOptionPane.ERROR_MESSAGE);
+						*/
 					
 				}
 				
@@ -197,6 +204,21 @@ public class AnadirViajeFuturo extends JFrame {
 		}
 		return inputFechaFin;
 	}
-	
+	@Override
+	public void actualizar(int evento, Object datos) {
+		switch (evento) {
+		case Evento.ANADIR_VIAJE_FUTURO:
+			if ((boolean) datos) {
+				JOptionPane.showMessageDialog(this, "Se ha añadido el viaje futuro", title,
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+			break;
+		default:
+			JOptionPane.showMessageDialog(this, "Evento desconocido", "ERROR INESPERADO",
+					JOptionPane.ERROR_MESSAGE);
+			break;
+		}
+	}
 	
 }

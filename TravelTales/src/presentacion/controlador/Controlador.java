@@ -8,5 +8,5 @@ public abstract class Controlador {
 		return instancia;
 	}
 
-	public abstract void accion(/*Context context*/);
+	public abstract void accion(int Evento, Object transfer);
 }
