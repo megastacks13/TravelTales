@@ -10,8 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import modelo.viaje.TViaje;
-import persistencia.dao.viaje.DAOViaje;
-import persistencia.dao.viaje.DAOViajeImp;
 import presentacion.controlador.Controlador;
 import presentacion.controlador.Evento;
 
@@ -61,6 +59,7 @@ public class AnadirViajeFuturo extends JFrame implements IGUI {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		contentPane.add(getPanelFormulario());
+		setVisible(true);
 	}
 	private JPanel getPanelFormulario() {
 		if (panelFormulario == null) {
@@ -170,7 +169,15 @@ public class AnadirViajeFuturo extends JFrame implements IGUI {
 					/*
 					DAOViaje daoViaje = new DAOViajeImp();
 					boolean created = daoViaje.crearViaje(viaje);*/
-					Controlador.getInstancia().accion(Evento.ANADIR_VIAJE_FUTURO, viaje);
+					try {
+						Controlador.getInstancia().accion(Evento.ANADIR_VIAJE_FUTURO, viaje);
+					}
+					catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, "Error al crear el viaje. Revise que toda la información es correcta "
+								+ "y si no contacte con soporte.", "Alerta de viaje",JOptionPane.ERROR_MESSAGE);
+					}
+					dispose();
+
 					/*
 					if (created) {
 						JOptionPane.showMessageDialog(null, "Viaje creado correctamente.", "Alerta de viaje",JOptionPane.INFORMATION_MESSAGE);
@@ -178,10 +185,7 @@ public class AnadirViajeFuturo extends JFrame implements IGUI {
 						dispose();
 						frameViajeFuturo.setVisible(true);
 					}
-					else
-						JOptionPane.showMessageDialog(null, "Error al crear el viaje. Revise que toda la información es correcta y si no contacte con soporte.", "Alerta de viaje",JOptionPane.ERROR_MESSAGE);
-						*/
-					
+					*/
 				}
 				
 			});
@@ -212,7 +216,6 @@ public class AnadirViajeFuturo extends JFrame implements IGUI {
 				JOptionPane.showMessageDialog(this, "Se ha añadido el viaje futuro", title,
 						JOptionPane.INFORMATION_MESSAGE);
 			}
-			
 			break;
 		default:
 			JOptionPane.showMessageDialog(this, "Evento desconocido", "ERROR INESPERADO",

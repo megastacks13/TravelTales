@@ -4,12 +4,12 @@ import presentacion.IGUI;
 
 public abstract class FactoriaGUI {
 	
-	public static FactoriaGUI instance;
+	public static FactoriaGUI instancia;
 	
-	public static FactoriaGUI getInstance() {
-		if (instance == null)
-			instance = new FactoriaGUIImp();
-		return instance;
+	public static FactoriaGUI getInstancia() {
+		if (instancia == null)
+			instancia = new FactoriaGUIImp();
+		return instancia;
 	}
 	
 	public abstract IGUI generarGUI(int evento);

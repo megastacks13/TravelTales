@@ -5,11 +5,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import presentacion.controlador.Controlador;
+import presentacion.controlador.Evento;
+
 import javax.swing.JButton;
 
-public class Inicio extends JFrame {
+public class Inicio extends JFrame implements IGUI {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -37,6 +42,7 @@ public class Inicio extends JFrame {
 	 * Create the frame.
 	 */
 	public Inicio() {
+		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 541, 392);
 		contentPane = new JPanel();
@@ -49,9 +55,16 @@ public class Inicio extends JFrame {
 		btnAnadirViajeFuturo.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		        AnadirViajeFuturo frameViajeFuturo = new AnadirViajeFuturo();
+		    	try {
+		    		Controlador.getInstancia().accion(Evento.GUI_ANADIR_VIAJE_FUTURO, null);
+		    		//AnadirViajeFuturo frameViajeFuturo = new AnadirViajeFuturo();
+			        //frameViajeFuturo.setVisible(true);
+		    	} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Ha sucedido un error inesperado: " + ex.getMessage(), 
+							"ERROR INESPERADO", JOptionPane.ERROR_MESSAGE);
+		    	}
 		        dispose();
-		        frameViajeFuturo.setVisible(true);
+		        
 		    }
 		});
 	}
@@ -62,6 +75,12 @@ public class Inicio extends JFrame {
 			btnAnadirViajeFuturo.setBounds(224, 159, 167, 32);
 		}
 		return btnAnadirViajeFuturo;
+	}
+
+
+	@Override
+	public void actualizar(int evento, Object datos) {
+		// Nada
 	}
 	
 }
