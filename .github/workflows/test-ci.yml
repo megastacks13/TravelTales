@@ -18,10 +18,14 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'  
+          distribution: 'temurin'
+      - name: Crear directorios para archivos compilados
+        run: mkdir -p out out_tests
 
-      - name: Compile Java files (before testing)
-        run: mkdir -p build && javac -d build TravelTales/src/**/*.java
+      - name: Compilar código principal
+        run: javac -d out $(find src -name "*.java")  # Compile main code
+      - name: Compilar tests
+        run: javac -d out_tests -cp out:libs/* $(find tests -name "*.java")  # Compile tests separately
 
       - name: Run tests
         run: java -cp .:libs/*:out org.junit.runner.JUnitCore $(find out -name "Test*.class" | sed 's|out/||' | sed 's|.class||' | tr '/' '.')
