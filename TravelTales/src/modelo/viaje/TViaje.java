@@ -15,7 +15,7 @@ public class TViaje implements Serializable{
 	private int numPersonas;
 	private String fechaIni;
 	private String fechaFin;
-	private DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy"); 
 	
 	
 	public TViaje(int id, String nombre, String destino, int numPersonas, String fechaIni, String fechaFin) {
