@@ -28,5 +28,5 @@ jobs:
         run: javac -d out_tests -cp out:libs/* $(find TravelTales/src tests -name "*.java")  # Compile tests separately
 
       - name: Run tests
-        run: java -cp .:libs/*:out org.junit.runner.JUnitCore $(find out -name "Test*.class" | sed 's|out/||' | sed 's|.class||' | tr '/' '.')
+        run: java -cp .:libs/*:out org.junit.runner.JUnitCore $(find out -name "AutoTest*.class" | sed 's|out/||' | sed 's|.class||' | tr '/' '.')
 
