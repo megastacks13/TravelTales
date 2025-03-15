@@ -1,0 +1,32 @@
+name: Java CI sin builds
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feature/TT-001
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Crear directorios para archivos compilados
+        run: mkdir -p out out_tests
+
+      - name: Compilar código principal
+        run: javac -d out $(find TravelTales/src -name "*.java")  # Compile main code
+      - name: Compilar tests
+        run: javac -d out_tests -cp out:libs/* $(find TravelTales/src tests -name "*.java")  # Compile tests separately
+
+      - name: Run tests
+        run: java -cp .:libs/*:out org.junit.runner.JUnitCore $(find out -name "AutoTest*.class" | sed 's|out/||' | sed 's|.class||' | tr '/' '.')
