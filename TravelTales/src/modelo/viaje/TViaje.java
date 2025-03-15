@@ -91,7 +91,7 @@ public class TViaje implements Serializable{
 
 
 	public void setFechaFin(String fechaFin) {
-		this.fechaFin = fechaFin;
+		this.fechaFin = fechaFin;  
 	}
 	
 	@Override
@@ -105,8 +105,7 @@ public class TViaje implements Serializable{
 		TViaje viaje = (TViaje) obj; 
 		
 		try {
-			return  this.id == viaje.getId() && 
-					this.nombre.equals(viaje.getNombre()) && 
+			return	this.nombre.equals(viaje.getNombre()) && 
 					this.destino.equals(viaje.getDestino()) && 
 					this.numPersonas == viaje.getNumPersonas() &&
 					this.getFechaIni().equals(viaje.getFechaIni()) &&
@@ -115,7 +114,4 @@ public class TViaje implements Serializable{
 			return false;
 		}
 	}
-
-
-	
 }

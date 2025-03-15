@@ -1,23 +1,41 @@
 package persistencia.dao.transactions;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class TransactionManagerImp extends TransactionManager {
+	
+	private ConcurrentHashMap<Thread,Transaction> map;
 
-	@Override
-	public Transaction nuevaTransaccion() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public TransactionManagerImp() {
+        //preguntar si hay que inicializar el mapa de esta manera
+        super();
+        map = new ConcurrentHashMap<Thread,Transaction>();
 
-	@Override
-	public Transaction getTransaccion() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    }
+    @Override
+    public Transaction nuevaTransaccion() throws Exception {
+        Thread thread = Thread.currentThread();
+        Transaction t = map.get(thread);
+        if(t != null)
+        {
+            throw new Exception("este hilo ya tiene una transaccion asocidada");
+        }
+        else
+        {
+            TransactionFactory tfactory = TransactionFactory.getInstance();
+            t = tfactory.newTransaction();
+            map.put(thread, t);
+            return t;
+        }
+    }
 
-	@Override
-	public void eliminaTransaccion() {
-		// TODO Auto-generated method stub
+    @Override
+    public Transaction getTransaccion() {
+        return map.get(Thread.currentThread());
+    }
 
-	}
-
+    @Override
+    public void eliminaTransaccion() {
+        map.remove(Thread.currentThread());
+    }
 }

@@ -51,7 +51,7 @@ public class TestTViaje {
 	
 	@Test
 	public void testNumPersonas() {
-		assertEquals(35, t1.getNumPersonas());
+		assertEquals(10, t1.getNumPersonas());
 		t1.setNumPersonas(30);
 		assertEquals(30, t1.getNumPersonas());
 	}

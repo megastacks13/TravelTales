@@ -25,22 +25,26 @@ public class DAOViajeImp implements DAOViaje{
 
 	@Override
 	public boolean crearViaje(TViaje viaje) { //Falta añadirle por algun lado comprobarDatos
+		return crearViaje(viaje, false);
+	}
+	
+	public boolean crearViaje(TViaje viaje, boolean rollbackOnEnd) {
 		boolean confirmacion = false;
 		
-		Transaction trans = null;
-		Connection con = null;
+		Transaction t = null;
+		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		
 		try { 
 				
-			trans = TransactionFactory.getInstance().newTransaction();
-			trans.start();
+			t = TransactionManager.getInstance().nuevaTransaccion();
 			//cuando se implemete TransactionManager sustituir las dos lineas anteriores por esto y 
 				//eliminar los commits() y los rollback()
 			//trans = TransactionManager.getInstance().getTransaccion();
-			con = (Connection) trans.getResource();
-			
-			pstmt = con.prepareStatement("INSERT INTO viajes (nombre_viaje, destino_viaje, fecha_inicio , fecha_fin,"
+			//con = (Connection) trans.getResource();
+			conn = t.start();
+			pstmt = conn.prepareStatement("INSERT INTO viajes (nombre_viaje, destino_viaje, fecha_inicio , fecha_fin,"
 					+ "num_personas) VALUES(?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, viaje.getNombre());
@@ -54,16 +58,14 @@ public class DAOViajeImp implements DAOViaje{
 			if(rs.next()) {
 				confirmacion = true;
 			}
-			trans.commit();
-			
-		}
-		catch(SQLException e) {
+			if(!rollbackOnEnd)
+				t.commit();
+			else
+				t.rollback();
+			return true;
+		}catch (Exception e) {
 			e.printStackTrace();
-			trans.rollback();
-			return false;
-		}catch (ParseException e) {
-			e.printStackTrace();
-			trans.rollback();
+			t.rollback();
 			return false;
 		}
 		finally {
@@ -76,38 +78,34 @@ public class DAOViajeImp implements DAOViaje{
 				e.printStackTrace();
 			}
 		}
-		return confirmacion;
 	}
 
 	@Override
-	public boolean comprobarDatos(TViaje viaje) {
-		boolean nuevo = true;
-		
-		Transaction trans = null;
-		Connection con = null;
+	public boolean estaEnLaBD(TViaje viaje) {
+		Transaction t = null;
+		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			trans = TransactionFactory.getInstance().newTransaction();
-			trans.start();
-			con = (Connection) trans.getResource();
-			pstmt = con.prepareStatement("SELECT * FROM viaje");
+			t = TransactionManager.getInstance().nuevaTransaccion();
+			//con = (Connection) trans.getResource();
+			conn = t.start();
+			pstmt = conn.prepareStatement("SELECT * FROM viajes");
 			rs = pstmt.executeQuery();
-			while(rs.next() && nuevo)
+			while(rs.next())
 			{
 				TViaje v1 = new TViaje(rs.getInt("id"),rs.getString("nombre_viaje"), rs.getString("destino_viaje"),
 						rs.getInt("num_personas"),rs.getDate("fecha_inicio").toString(), rs.getDate("fecha_fin").toString());
 				
-				if(viaje.equals(v1)) {
-					nuevo = false;
-					break;
+				if(viaje.getNombre().equals(v1.getNombre())) {
+					t.commit();
+					return true;
 					}
 			}
-			trans.commit();
-		
+			t.rollback();
 		}catch(Exception e) {
 			e.printStackTrace();
-			trans.rollback();
+			t.rollback();
 		}finally {
 			try {
 				if(pstmt != null)pstmt.close();
@@ -117,8 +115,7 @@ public class DAOViajeImp implements DAOViaje{
 				e.printStackTrace();
 			}
 		}
-
-		return nuevo;
+		return false;
 	}
 	
 
@@ -127,17 +124,20 @@ public class DAOViajeImp implements DAOViaje{
 		Transaction t = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String statement = "SELECT * FROM viajes WHERE nombre_viaje = ? FOR UPDATE";
+		
 		try {
-			t = TransactionManager.getInstance().getTransaccion();
-			conn = (Connection) t.getResource();
+			t = TransactionManager.getInstance().nuevaTransaccion(); //da null
+			//conn = (Connection) t.getResource();
+			conn = t.start();
 			ps = conn.prepareStatement(statement);
 			int i = 1;
 			ps.setString(i++, nombre);
 			
 			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 			
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				tv = new TViaje();
 				tv.setId(rs.getInt("viajes.id"));
@@ -147,10 +147,17 @@ public class DAOViajeImp implements DAOViaje{
 				tv.setFechaFin(formato.format(rs.getDate("viajes.fecha_fin")));
 				tv.setNumPersonas(rs.getInt("viajes.num_personas"));			
 			}
-			rs.close();
-			ps.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		finally {
+			t.rollback();
+			try {
+				if(ps != null)ps.close();
+				if(rs != null)rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return tv;
 	}
@@ -163,8 +170,9 @@ public class DAOViajeImp implements DAOViaje{
 		PreparedStatement ps = null;
 		String statement = "SELECT * FROM viajes WHERE activo = 1 FOR UPDATE";
 		try {
-			t = TransactionManager.getInstance().getTransaccion();
-			conn = (Connection) t.getResource();
+			t = TransactionManager.getInstance().nuevaTransaccion();
+			//conn = (Connection) t.getResource();
+			conn = t.start();
 			ps = conn.prepareStatement(statement);
 			
 			ResultSet rs = ps.executeQuery();
@@ -187,5 +195,46 @@ public class DAOViajeImp implements DAOViaje{
 			e.printStackTrace();
 		}
 		return lista;
+	}
+	
+	public void borradoFisicoViaje(TViaje viaje) {	
+		Transaction t = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		try {
+			t = TransactionManager.getInstance().nuevaTransaccion();
+			//con = (Connection) trans.getResource();
+			conn = t.start();
+			pstmt = conn.prepareStatement("SELECT * FROM viajes");
+			rs = pstmt.executeQuery();
+			while(rs.next())
+			{
+				TViaje v1 = new TViaje(rs.getInt("id"),rs.getString("nombre_viaje"), rs.getString("destino_viaje"),
+						rs.getInt("num_personas"),rs.getDate("fecha_inicio").toString(), rs.getDate("fecha_fin").toString());
+				
+				if(viaje.getNombre().equals(v1.getNombre())) {
+					pstmt2 = conn.prepareStatement("DELETE FROM viajes WHERE nombre_viaje = ?");
+					pstmt2.setString(1, v1.getNombre());
+					pstmt2.executeUpdate();
+					t.commit();
+					return;
+					}
+			}
+			t.commit();
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+			t.rollback();
+		}finally {
+			try {
+				if(pstmt != null)pstmt.close();
+				
+				if(rs != null)rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

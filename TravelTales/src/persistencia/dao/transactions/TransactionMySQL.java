@@ -14,17 +14,17 @@ public class TransactionMySQL implements Transaction{
 	private String password = SQLPersonalInfo.PASSWORD;
 	
 	@Override
-	public void start() {
+	public Connection start() {
 		try {
 			//DriverManager.registerDriver(new org.hsqldb.jdbc.JDBCDriver());
 			con = DriverManager.getConnection(path,username,password);
 			con.setAutoCommit(false);
+			return con;
 		}catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
-		
-		
+		return null;
 	}
 
 	@Override
