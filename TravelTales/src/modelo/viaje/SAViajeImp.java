@@ -32,7 +32,7 @@ public class SAViajeImp implements SAViaje {
 			
 			TViaje aux = daoViaje.leerPorNombre(tViaje.getNombre());
 			List<TViaje> lista = daoViaje.leerTodos();
-			
+
 			if (aux != null)
 				r = -1;
 			else if (tViaje.getFechaIni().before(new java.sql.Date(System.currentTimeMillis())))
