@@ -6,9 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import modelo.viaje.TViaje;
 import persistencia.dao.transactions.TransactionFactory;
+import persistencia.dao.transactions.TransactionManager;
 import persistencia.dao.transactions.Transaction;
 
 
@@ -31,6 +35,9 @@ public class DAOViajeImp implements DAOViaje{
 				
 			trans = TransactionFactory.getInstance().newTransaction();
 			trans.start();
+			//cuando se implemete TransactionManager sustituir las dos lineas anteriores por esto y 
+				//eliminar los commits() y los rollback()
+			//trans = TransactionManager.getInstance().getTransaccion();
 			con = (Connection) trans.getResource();
 			
 			pstmt = con.prepareStatement("INSERT INTO viajes (nombre_viaje, destino_viaje, fecha_inicio , fecha_fin,"
@@ -91,8 +98,10 @@ public class DAOViajeImp implements DAOViaje{
 				TViaje v1 = new TViaje(rs.getInt("id"),rs.getString("nombre_viaje"), rs.getString("destino_viaje"),
 						rs.getInt("num_personas"),rs.getDate("fecha_inicio").toString(), rs.getDate("fecha_fin").toString());
 				
-				if(viaje.equals(v1))
+				if(viaje.equals(v1)) {
 					nuevo = false;
+					break;
+					}
 			}
 			trans.commit();
 		
@@ -110,5 +119,73 @@ public class DAOViajeImp implements DAOViaje{
 		}
 
 		return nuevo;
+	}
+	
+
+	public TViaje leerPorNombre(String nombre) {
+		TViaje tv = null;
+		Transaction t = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		String statement = "SELECT * FROM viajes WHERE nombre_viaje = ? FOR UPDATE";
+		try {
+			t = TransactionManager.getInstance().getTransaccion();
+			conn = (Connection) t.getResource();
+			ps = conn.prepareStatement(statement);
+			int i = 1;
+			ps.setString(i++, nombre);
+			
+			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				tv = new TViaje();
+				tv.setId(rs.getInt("viajes.id"));
+				tv.setNombre(rs.getString("viajes.nombre_viaje"));
+				tv.setDestino(rs.getString("viajes.destino_viaje"));
+				tv.setFechaIni(formato.format(rs.getDate("viajes.fecha_inicio")));
+				tv.setFechaFin(formato.format(rs.getDate("viajes.fecha_fin")));
+				tv.setNumPersonas(rs.getInt("viajes.num_personas"));			
+			}
+			rs.close();
+			ps.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tv;
+	}
+	
+	public List<TViaje> leerTodos() {
+		TViaje tv = null;
+		List<TViaje> lista = null;
+		Transaction t = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		String statement = "SELECT * FROM viajes WHERE activo = 1 FOR UPDATE";
+		try {
+			t = TransactionManager.getInstance().getTransaccion();
+			conn = (Connection) t.getResource();
+			ps = conn.prepareStatement(statement);
+			
+			ResultSet rs = ps.executeQuery();
+			lista = new ArrayList<>();
+			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+			
+			while (rs.next()) {
+				tv = new TViaje();
+				tv.setId(rs.getInt("viajes.id"));
+				tv.setNombre(rs.getString("viajes.nombre_viaje"));
+				tv.setDestino(rs.getString("viajes.destino_viaje"));
+				tv.setFechaIni(formato.format(rs.getDate("viajes.fecha_inicio")));
+				tv.setFechaFin(formato.format(rs.getDate("viajes.fecha_fin")));
+				tv.setNumPersonas(rs.getInt("viajes.num_personas"));
+				lista.add(tv);
+			}
+			rs.close();
+			ps.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
 	}
 }

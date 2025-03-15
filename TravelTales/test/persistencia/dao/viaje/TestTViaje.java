@@ -41,12 +41,19 @@ public class TestTViaje {
 		t1.setFechaIni("27/09/2003");
 		assertEquals(java.sql.Date.valueOf("2003-09-27"), t1.getFechaIni());
 	}
-	
+
 	@Test 
 	public void testFechaFin() throws ParseException { //Funciona
 		assertEquals(java.sql.Date.valueOf("2025-09-05"), t1.getFechaFin());
 		t1.setFechaFin("19/02/2004");
 		assertEquals(java.sql.Date.valueOf("2004-02-19"), t1.getFechaFin());
+	}	
+	
+	@Test
+	public void testNumPersonas() {
+		assertEquals(35, t1.getNumPersonas());
+		t1.setNumPersonas(30);
+		assertEquals(30, t1.getNumPersonas());
 	}
 
 }

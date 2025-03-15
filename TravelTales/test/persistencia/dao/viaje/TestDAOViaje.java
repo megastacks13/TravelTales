@@ -14,6 +14,9 @@ import persistencia.dao.transactions.Transaction;
 import persistencia.dao.transactions.TransactionFactory;
 
 class TestDAOViaje {
+	
+	TViaje t1 = new TViaje(0,"Viaje a Cancún", "Cancún", 35, "29/08/2025",
+			"05/09/2025");
 
 	private DAOViaje daoViaje;
 	private Connection con;
@@ -28,9 +31,8 @@ class TestDAOViaje {
 	    trans = TransactionFactory.getInstance().newTransaction();
 	    trans.start();
 	    con = (Connection) trans.getResource();
-	    
 	}
-
+	
 	@Test
 	void testCrearViaje() { //FALTA DESHACER CAMBIOS DESPUES DE CADA TEST
 		TViaje viaje = new TViaje(1, "Viaje a China", "China", 10, "31/03/2025","12/04/2025");
