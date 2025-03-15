@@ -125,7 +125,7 @@ public class DAOViajeImp implements DAOViaje{
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String statement = "SELECT * FROM viajes WHERE nombre_viaje = ? FOR UPDATE";
+		String statement = "SELECT * FROM viajes WHERE nombre_viaje = ?"; //FOR UPDATE
 		
 		try {
 			t = TransactionManager.getInstance().nuevaTransaccion(); //da null

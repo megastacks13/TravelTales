@@ -16,8 +16,11 @@ public class ComandoAnadirViajeFuturo implements Command {
 		Pair<Integer, Object> pair = new Pair<Integer, Object>(null, null);
 		
 		try {
-			DAOViaje daoViaje = new DAOViajeImp(); // esto se deberia cambiar llamando a factoriaSA y al metodo en el SA			
-			boolean res = daoViaje.crearViaje(viaje);
+			//DAOViaje daoViaje = new DAOViajeImp(); // esto se deberia cambiar llamando a factoriaSA y al metodo en el SA			
+			//boolean res = daoViaje.crearViaje(viaje); //Cambiado, borradlo si quereis
+			
+			SAViaje SAViaje = FactoriaSA.getInstancia().crearSAViaje();
+			int res = SAViaje.crearViajeFuturo(viaje);
 			
 			//cuando se implemete TransactionManager sustituir las dos lineas anteriores por estas dos
 			//SAViaje SAViaje = FactoriaSA.getInstancia().crearSAViaje();
